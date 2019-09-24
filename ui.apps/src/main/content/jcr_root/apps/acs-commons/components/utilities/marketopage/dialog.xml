@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+    jcr:primaryType="cq:Dialog"
+    xtype="dialog">
+    <items jcr:primaryType="cq:WidgetCollection">
+        <general
+            jcr:primaryType="nt:unstructured"
+            title="TypeKit Settings"
+            xtype="panel">
+            <items jcr:primaryType="cq:WidgetCollection">
+                <enpointHost
+                    jcr:primaryType="cq:Widget"
+                    fieldLabel="REST Endpoint Host"
+                    fieldDescription="The Marketo REST API Endpont host, found in Marketo under Admin >> Integration >> Web Services. Example: https://1234.mktorest.com"
+                    name="./endpointHost"
+                    xtype="textfield"/>
+                <serverInstance
+                    jcr:primaryType="cq:Widget"
+                    fieldLabel="Marketo Server Instance"
+                    fieldDescription="URL Used to access marketo, e.g. //app-ab3123.marketo.com"
+                    name="./serverInstance"
+                    xtype="textfield"/>
+                <munchkinId
+                    jcr:primaryType="cq:Widget"
+                    fieldLabel="Munchkin Account ID"
+                    fieldDescription="Found in Marketo under Admin >> Integration >> Munchkin"
+                    name="./munchkinId"
+                    xtype="textfield"/>
+                <clientId
+                    jcr:primaryType="cq:Widget"
+                    fieldLabel="Client ID"
+                    fieldDescription="Found in Marketo under Admin >> Integration >> LaunchPoint"
+                    name="./clientId"
+                    xtype="textfield"/>
+                <clientSecret
+                    jcr:primaryType="cq:Widget"
+                    fieldLabel="Client Secret"
+                    fieldDescription="Found in Marketo under Admin >> Integration >> LaunchPoint"
+                    name="./clientSecret"
+                    xtype="password"/>
+            </items>
+        </general>
+    </items>
+</jcr:root>

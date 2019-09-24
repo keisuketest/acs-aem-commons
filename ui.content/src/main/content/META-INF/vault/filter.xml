@@ -62,6 +62,10 @@
         <include pattern="/etc/cloudservices/dtm/jcr:content"/>
         <include pattern="/etc/cloudservices/dtm/rep:policy"/>
     </filter>
+    <filter root="/etc/cloudservices/marketo">
+        <include pattern="/etc/cloudservices/marketo/jcr:content"/>
+        <include pattern="/etc/cloudservices/marketo/rep:policy"/>
+    </filter>
     <filter root="/etc/cloudservices/sharethis">
         <include pattern="/etc/cloudservices/sharethis/jcr:content"/>
         <include pattern="/etc/cloudservices/sharethis/rep:policy"/>
