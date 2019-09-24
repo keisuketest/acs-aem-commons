@@ -49,13 +49,20 @@ public class MarketoClientConfigurationManager {
         log.debug("Loaded cloudService configs: {}", Arrays.toString(services));
       }
       Configuration cfg = configurationManager.getConfiguration("marketo", services);
-      log.debug("Loaded configuration: {}", cfg);
-      Resource content = cfg.getResource().getChild(JcrConstants.JCR_CONTENT);
-      if (content != null) {
-        log.debug("Getting marketo configuration from: {}", content);
-        return content.adaptTo(MarketoClientConfiguration.class);
+      if (cfg != null) {
+        log.debug("Loaded configuration: {}", cfg);
+        Resource content = cfg.getResource().getChild(JcrConstants.JCR_CONTENT);
+        if (content != null) {
+          log.debug("Getting marketo configuration from: {}", content);
+          return content.adaptTo(MarketoClientConfiguration.class);
+        } else {
+          log.warn("No content resource found under {}", cfg.getResource());
+          return null;
+        }
       } else {
-        log.warn("No content resource found under {}", cfg.getResource());
+        if (log.isDebugEnabled()) {
+          log.debug("Failed to load configuration from: {}", Arrays.toString(services));
+        }
         return null;
       }
     } else {
