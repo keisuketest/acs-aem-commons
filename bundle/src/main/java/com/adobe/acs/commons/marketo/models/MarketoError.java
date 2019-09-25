@@ -24,9 +24,4 @@ public class MarketoError {
     this.message = message;
   }
 
-  @Override
-  public String toString() {
-    return "MarketoError [code=" + code + ", message=" + message + "]";
-  }
-
 }

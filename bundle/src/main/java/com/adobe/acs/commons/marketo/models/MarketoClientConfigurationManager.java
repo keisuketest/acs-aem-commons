@@ -13,7 +13,6 @@ import com.day.cq.commons.inherit.HierarchyNodeInheritanceValueMap;
 import com.day.cq.commons.inherit.InheritanceValueMap;
 import com.day.cq.commons.jcr.JcrConstants;
 import com.day.cq.wcm.api.PageManager;
-import com.day.cq.wcm.api.WCMMode;
 import com.day.cq.wcm.webservicesupport.Configuration;
 import com.day.cq.wcm.webservicesupport.ConfigurationManager;
 
@@ -79,9 +78,5 @@ public class MarketoClientConfigurationManager {
     } else {
       return null;
     }
-  }
-
-  public boolean isShowPlaceholder() {
-    return WCMMode.fromRequest(request) == WCMMode.EDIT && !request.getResource().getValueMap().containsKey("formId");
   }
 }

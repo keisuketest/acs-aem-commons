@@ -1,4 +1,4 @@
-package com.adobe.acs.commons.marketo;
+package com.adobe.acs.commons.marketo.impl;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -13,6 +13,8 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+import com.adobe.acs.commons.marketo.MarketoClient;
+import com.adobe.acs.commons.marketo.StaticResponseMarketoClient;
 import com.adobe.acs.commons.marketo.models.MarketoClientConfiguration;
 import com.adobe.acs.commons.marketo.models.MarketoForm;
 
