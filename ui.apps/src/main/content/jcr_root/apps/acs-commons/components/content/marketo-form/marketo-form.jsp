@@ -21,7 +21,7 @@
         ${formCmp.script}
         <c:if test="${formCmp.values != null && fn:length(formCmp.values) > 0}">
           var getParam = function(key) {
-            var query = parser.search.substring(1);
+            var query = window.location.search.substring(1);
             var vars = query.split('&');
             for (var i = 0; i < vars.length; i++) {
               var pair = vars[i].split('=');
