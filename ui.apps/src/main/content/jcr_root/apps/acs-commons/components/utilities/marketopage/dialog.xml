@@ -5,7 +5,7 @@
     <items jcr:primaryType="cq:WidgetCollection">
         <general
             jcr:primaryType="nt:unstructured"
-            title="TypeKit Settings"
+            title="Marketo Settings"
             xtype="panel">
             <items jcr:primaryType="cq:WidgetCollection">
                 <enpointHost
