@@ -27,6 +27,8 @@ import org.apache.sling.models.annotations.Model;
 import org.apache.sling.models.annotations.Via;
 import org.apache.sling.models.annotations.injectorspecific.ChildResource;
 import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.day.cq.commons.Externalizer;
 import com.day.cq.wcm.api.WCMMode;
@@ -36,6 +38,8 @@ import com.day.cq.wcm.api.WCMMode;
  */
 @Model(adaptables = SlingHttpServletRequest.class, defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL)
 public class MarketoFormCmp {
+
+  private static final Logger log = LoggerFactory.getLogger(MarketoFormCmp.class);
 
   @ValueMapValue
   @Via("resource")
@@ -79,10 +83,12 @@ public class MarketoFormCmp {
     Externalizer externalizer = request.getResourceResolver().adaptTo(Externalizer.class);
     if (successUrl.startsWith("/") && externalizer != null) {
       fullUrl = externalizer.relativeLink(request, successUrl);
+      log.debug("Externalized {} to {}", successUrl, fullUrl);
     }
     if (!successUrl.contains(".")) {
       fullUrl += ".html";
     }
+    log.debug("Final URL: {}", fullUrl);
     return fullUrl;
 
   }

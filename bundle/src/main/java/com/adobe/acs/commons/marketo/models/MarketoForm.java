@@ -27,41 +27,33 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MarketoForm {
 
-  private MarketoFolder folder;
   private int id;
+  private String locale;
   private String name;
-
-  public String getDisplayName() {
-    return folder.getFolderName() + "/" + name;
-  }
-
-  public MarketoFolder getFolder() {
-    return folder;
-  }
 
   public int getId() {
     return id;
+  }
+
+  public String getLocale() {
+    return locale;
   }
 
   public String getName() {
     return name;
   }
 
-  public void setFolder(MarketoFolder folder) {
-    this.folder = folder;
-  }
-
   public void setId(int id) {
     this.id = id;
   }
 
-  public void setName(String name) {
-    this.name = name;
+
+  public void setLocale(String locale) {
+    this.locale = locale;
   }
 
-  @Override
-  public String toString() {
-    return "MarketoForm [folder=" + getFolder() + ", id=" + getId() + ", name=" + getName() + "]";
+  public void setName(String name) {
+    this.name = name;
   }
 
 }

@@ -55,7 +55,8 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 
 /**
- * Used to drive the list of Form ID options for the Marketo Form component dialog.
+ * Used to drive the list of Form ID options for the Marketo Form component
+ * dialog.
  */
 @Component(service = Servlet.class, property = { ServletResolverConstants.SLING_SERVLET_METHODS + "=GET",
     ServletResolverConstants.SLING_SERVLET_RESOURCE_TYPES
@@ -96,11 +97,13 @@ public class MarketoFormDataSource extends SlingSafeMethodsServlet {
         throw new RepositoryException("No Marketo configuration found for resource");
       }
 
+      int currentValue = getCurrentValue(request);
       options = formCache.get(config).stream()
-          .sorted((MarketoForm f1, MarketoForm f2) -> f1.getDisplayName().compareTo(f2.getDisplayName())).map(f -> {
+          .sorted((MarketoForm f1, MarketoForm f2) -> f1.getName().compareTo(f2.getName())).map(f -> {
             Map<String, Object> data = new HashMap<>();
+            data.put("selected", currentValue == f.getId());
             data.put("value", f.getId());
-            data.put("text", String.format("%s/%s (%d)", f.getFolder().getFolderName(), f.getName(), f.getId()));
+            data.put("text", String.format("%s [%s] (%d)", f.getName(), f.getLocale(), f.getId()));
             return new ValueMapResource(request.getResourceResolver(), new ResourceMetadata(), "nt:unstructured",
                 new ValueMapDecorator(data));
           }).collect(Collectors.toList());
@@ -115,6 +118,14 @@ public class MarketoFormDataSource extends SlingSafeMethodsServlet {
     }
     request.setAttribute(DataSource.class.getName(), new SimpleDataSource(options.iterator()));
 
+  }
+
+  private int getCurrentValue(SlingHttpServletRequest request) {
+    Resource suffix = request.getRequestPathInfo().getSuffixResource();
+    if (suffix != null) {
+      return suffix.getValueMap().get("formId", -1);
+    }
+    return -1;
   }
 
 }
