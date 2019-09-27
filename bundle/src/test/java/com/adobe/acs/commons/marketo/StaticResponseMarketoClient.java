@@ -45,7 +45,7 @@ public class StaticResponseMarketoClient extends MarketoClientImpl {
     }
   }
 
-  protected @NotNull String doGet(@NotNull String url, String bearerToken) throws IOException {
+  protected @NotNull String getApiResponse(@NotNull String url, String bearerToken) throws IOException {
     String resp = IOUtils.toString(StaticResponseMarketoClient.class.getResourceAsStream(resourcePath), StandardCharsets.UTF_8);
     if (resourcePaths != null && resourcePaths.hasNext()) {
       resourcePath = resourcePaths.next();

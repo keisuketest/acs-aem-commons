@@ -45,6 +45,10 @@ public class MarketoFormCmp {
   @Via("resource")
   private String formId;
 
+  @ChildResource
+  @Via("resource")
+  private List<FormValue> hidden;
+
   private SlingHttpServletRequest request;
 
   @ValueMapValue
@@ -54,6 +58,7 @@ public class MarketoFormCmp {
   @ValueMapValue
   @Via("resource")
   private String successUrl;
+  
 
   @ChildResource
   @Via("resource")
@@ -65,6 +70,10 @@ public class MarketoFormCmp {
 
   public String getFormId() {
     return formId;
+  }
+
+  public List<FormValue> getHidden() {
+    return hidden;
   }
 
   public SlingHttpServletRequest getRequest() {
@@ -101,23 +110,4 @@ public class MarketoFormCmp {
     return WCMMode.fromRequest(request) == WCMMode.EDIT;
   }
 
-  public void setFormId(String formId) {
-    this.formId = formId;
-  }
-
-  public void setRequest(SlingHttpServletRequest request) {
-    this.request = request;
-  }
-
-  public void setScript(String script) {
-    this.script = script;
-  }
-
-  public void setSuccessUrl(String successUrl) {
-    this.successUrl = successUrl;
-  }
-
-  public void setValues(List<FormValue> values) {
-    this.values = values;
-  }
 }

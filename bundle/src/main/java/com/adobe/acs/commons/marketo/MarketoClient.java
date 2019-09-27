@@ -26,6 +26,7 @@ import javax.annotation.Nonnull;
 
 import com.adobe.acs.commons.marketo.models.MarketoClientConfiguration;
 import com.adobe.acs.commons.marketo.models.MarketoForm;
+import com.adobe.acs.commons.marketo.models.MarketoField;
 
 /**
  * A client for interacting with Marketo's API.
@@ -49,5 +50,14 @@ public interface MarketoClient {
    * @throws IOException an exception occurs interacting with the API
    */
   public @Nonnull List<MarketoForm> getForms(@Nonnull MarketoClientConfiguration config) throws IOException;
+
+  /**
+   * Retrieve all of the available forms from the current organization in Marketo.
+   * 
+   * @param config the configuration for this request
+   * @return the full list of available forms
+   * @throws IOException an exception occurs interacting with the API
+   */
+  public @Nonnull List<MarketoField> getFields(@Nonnull MarketoClientConfiguration config) throws IOException;
 
 }

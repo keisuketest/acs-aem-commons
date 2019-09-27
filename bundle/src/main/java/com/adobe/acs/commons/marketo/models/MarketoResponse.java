@@ -20,25 +20,22 @@
 package com.adobe.acs.commons.marketo.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Container object for a Marketo REST API response.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class MarketoFormResponse {
+public class MarketoResponse<T> {
 
   private MarketoError[] errors;
-
-  @JsonProperty("result")
-  private MarketoForm[] result;
+  private T[] result;
   private boolean success;
 
   public MarketoError[] getErrors() {
     return errors;
   }
 
-  public MarketoForm[] getResult() {
+  public T[] getResult() {
     return result;
   }
 
@@ -50,7 +47,7 @@ public class MarketoFormResponse {
     this.errors = errors;
   }
 
-  public void setResult(MarketoForm[] result) {
+  public void setResult(T[] result) {
     this.result = result;
   }
 

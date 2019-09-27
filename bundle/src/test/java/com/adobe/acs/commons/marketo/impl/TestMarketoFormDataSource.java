@@ -70,7 +70,7 @@ public class TestMarketoFormDataSource {
 
     MarketoClient client = new StaticResponseMarketoClient(new String[] {
         "/com/adobe/acs/commons/marketo/token-response.json", "/com/adobe/acs/commons/marketo/form-response.json",
-        "/com/adobe/acs/commons/marketo/form-response-noassets.json" });
+        "/com/adobe/acs/commons/marketo/response-noassets.json" });
     mktoDS.bindMarketoClient(client);
 
     mktoDS.doGet(context.request(), context.response());
@@ -88,7 +88,7 @@ public class TestMarketoFormDataSource {
 
     MarketoClient client = new StaticResponseMarketoClient(new String[] {
         "/com/adobe/acs/commons/marketo/token-response.json", "/com/adobe/acs/commons/marketo/form-response.json",
-        "/com/adobe/acs/commons/marketo/form-response-noassets.json" });
+        "/com/adobe/acs/commons/marketo/response-noassets.json" });
     mktoDS.bindMarketoClient(client);
 
     mktoDS.doGet(context.request(), context.response());

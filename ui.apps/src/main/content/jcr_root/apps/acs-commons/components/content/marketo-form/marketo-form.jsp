@@ -39,28 +39,44 @@
         </c:if>
         ${formCmp.script}
         <c:if test="${formCmp.values != null && fn:length(formCmp.values) > 0}">
-          var getParam = function(key) {
-            var query = window.location.search.substring(1);
-            var vars = query.split('&');
-            for (var i = 0; i < vars.length; i++) {
-              var pair = vars[i].split('=');
-              if (key === pair[0]) {
-                return decodeURIComponent(pair[1]);
-              }
-            }
-          }
-          var data = {};
+          var values = {};
           <c:forEach var="v" items="${formCmp.values}">
             <c:choose>
               <c:when test="${v.source == 'static'}">
-                data["${v.name}"] = "${v.value}";
+                values["${v.name}"] = "${v.value}";
+              </c:when>
+              <c:when test="${v.source == 'contextHub'}">
+                values['${v.name}'] = ContextHub.getItem("${v.value}");
+              </c:when>
+              <c:when test="${v.source == 'jsVariable'}">
+                values['${v.name}'] = ${v.value};
               </c:when>
               <c:otherwise>
-                data["${v.name}"] = getParam("${v.value}");
+                values["${v.name}"] = "${param[v.value]}";
               </c:otherwise>
             </c:choose>
           </c:forEach>
-          form.vals(data);
+          form.vals(values);
+        </c:if>
+        <c:if test="${formCmp.hidden != null && fn:length(formCmp.hidden) > 0}">
+          var hiddenFields = {};
+          <c:forEach var="h" items="${formCmp.hidden}">
+            <c:choose>
+              <c:when test="${h.source == 'static'}">
+                hiddenFields["${h.name}"] = "${h.value}";
+              </c:when>
+              <c:when test="${h.source == 'contextHub'}">
+                hiddenFields['${h.name}'] = ContextHub.getItem("${h.value}");
+              </c:when>
+              <c:when test="${h.source == 'jsVariable'}">
+                hiddenFields['${h.name}'] = ${h.value};
+              </c:when>
+              <c:otherwise>
+                hiddenFields["${h.name}"] = "${param[h.value]}";
+              </c:otherwise>
+            </c:choose>
+          </c:forEach>
+          form.addHiddenFields(hiddenFields);
         </c:if>
       });
     </script>

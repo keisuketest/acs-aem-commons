@@ -45,21 +45,26 @@ import org.slf4j.LoggerFactory;
 import com.adobe.acs.commons.marketo.MarketoClient;
 import com.adobe.acs.commons.marketo.models.MarketoClientConfiguration;
 import com.adobe.acs.commons.marketo.models.MarketoError;
+import com.adobe.acs.commons.marketo.models.MarketoField;
 import com.adobe.acs.commons.marketo.models.MarketoForm;
-import com.adobe.acs.commons.marketo.models.MarketoFormResponse;
+import com.adobe.acs.commons.marketo.models.MarketoResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Implementation of the MarketoClient using the REST API.
+ * 
+ * @param <I>
  */
 @Component(service = MarketoClient.class)
 public class MarketoClientImpl implements MarketoClient {
 
   private static final Logger log = LoggerFactory.getLogger(MarketoClientImpl.class);
+
   private static final int PAGE_SIZE = 200;
+
   private ObjectMapper mapper = new ObjectMapper();
 
-  protected @Nonnull String doGet(@Nonnull String url, String bearerToken) throws IOException {
+  protected @Nonnull String getApiResponse(@Nonnull String url, String bearerToken) throws IOException {
     try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
       HttpGet httpGet = new HttpGet(url);
       if (StringUtils.isNotBlank(bearerToken)) {
@@ -78,22 +83,39 @@ public class MarketoClientImpl implements MarketoClient {
     String url = String.format(
         "https://%s/identity/oauth/token?grant_type=client_credentials&client_id=%s&client_secret=%s",
         config.getEndpointHost(), config.getClientId(), config.getClientSecret());
-    String response = doGet(url, null);
+    String response = getApiResponse(url, null);
     Map<?, ?> responseData = mapper.readValue(response, Map.class);
     return (String) responseData.get("access_token");
 
   }
 
-  private @Nullable MarketoForm[] getFormApiPage(@Nonnull MarketoClientConfiguration config, @Nonnull String token,
-      int page) throws IOException {
-    log.trace("getFormApiPage({})", page);
+  @Override
+  public List<MarketoField> getFields(MarketoClientConfiguration config) throws IOException {
+    String apiToken = getApiToken(config);
+    List<MarketoField> fields = new ArrayList<>();
+
+    String base = String.format("https://%s/rest/asset/v1/form/fields.json?", config.getEndpointHost());
+
+    for (int i = 0; true; i++) {
+      MarketoField[] page = getApiPage(base, apiToken, i, MarketoFieldResponse.class);
+      if (page == null || page.length == 0) {
+        break;
+      } else {
+        Arrays.stream(page).forEach(fields::add);
+      }
+    }
+    return fields;
+  }
+
+  private @Nullable <T, R extends MarketoResponse<T>> T[] getApiPage(@Nonnull String urlBase, @Nonnull String token,
+      int page, Class<R> responseType) throws IOException {
+    log.trace("getApiPage({})", page);
     int offset = PAGE_SIZE * page;
 
-    String url = String.format("https://%s/rest/asset/v1/forms.json?maxReturn=%s&offset=%s&status=approved",
-        config.getEndpointHost(), PAGE_SIZE, offset);
+    String url = String.format("%smaxReturn=%s&offset=%s", urlBase, PAGE_SIZE, offset);
 
-    String responseText = doGet(url, token);
-    MarketoFormResponse response = mapper.readValue(responseText, MarketoFormResponse.class);
+    String responseText = getApiResponse(url, token);
+    MarketoResponse<T> response = mapper.readValue(responseText, responseType);
     if (response.getErrors() != null && response.getErrors().length > 0) {
       throw new IOException("Retrieved errors in response: "
           + Arrays.stream(response.getErrors()).map(MarketoError::getMessage).collect(Collectors.joining(", ")));
@@ -108,8 +130,10 @@ public class MarketoClientImpl implements MarketoClient {
   public List<MarketoForm> getForms(@Nonnull MarketoClientConfiguration config) throws IOException {
     String apiToken = getApiToken(config);
     List<MarketoForm> forms = new ArrayList<>();
+    String base = String.format("https://%s/rest/asset/v1/forms.json?status=approved&", config.getEndpointHost());
     for (int i = 0; true; i++) {
-      MarketoForm[] page = getFormApiPage(config, apiToken, i);
+
+      MarketoForm[] page = getApiPage(base, apiToken, i, MarketoFormResponse.class);
       if (page == null || page.length == 0) {
         break;
       } else {

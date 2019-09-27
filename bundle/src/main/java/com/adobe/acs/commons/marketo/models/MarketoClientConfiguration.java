@@ -98,22 +98,6 @@ public class MarketoClientConfiguration {
     this.clientId = clientId;
   }
 
-  public void setClientSecret(String clientSecret) {
-    this.clientSecret = clientSecret;
-  }
-
-  public void setEndpointHost(String endpointHost) {
-    this.endpointHost = endpointHost;
-  }
-
-  public void setMunchkinId(String munchkinId) {
-    this.munchkinId = munchkinId;
-  }
-
-  public void setServerInstance(String serverInstance) {
-    this.serverInstance = serverInstance;
-  }
-
   @Override
   public String toString() {
     return "MarketoClientConfiguration [endpointHost=" + endpointHost + ", clientId=" + clientId + ", clientSecret="

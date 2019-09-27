@@ -22,7 +22,6 @@ package com.adobe.acs.commons.marketo.impl;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
@@ -35,6 +34,7 @@ import org.junit.Test;
 import com.adobe.acs.commons.marketo.MarketoClient;
 import com.adobe.acs.commons.marketo.StaticResponseMarketoClient;
 import com.adobe.acs.commons.marketo.models.MarketoClientConfiguration;
+import com.adobe.acs.commons.marketo.models.MarketoField;
 import com.adobe.acs.commons.marketo.models.MarketoForm;
 
 import io.wcm.testing.mock.aem.junit.AemContext;
@@ -72,7 +72,7 @@ public class TestMarketoClient {
 
   @Test
   public void testError() throws IOException {
-    MarketoClient client = new StaticResponseMarketoClient("/com/adobe/acs/commons/marketo/form-response-error.json");
+    MarketoClient client = new StaticResponseMarketoClient("/com/adobe/acs/commons/marketo/response-error.json");
     try {
       client.getForms(config);
       fail();
@@ -82,28 +82,29 @@ public class TestMarketoClient {
   }
 
   @Test
-  public void testErrors() throws IOException {
-    MarketoClient client = new StaticResponseMarketoClient("/com/adobe/acs/commons/marketo/form-response-errors.json");
-    try {
-      client.getForms(config);
-      fail();
-    } catch (IOException e) {
-      assertTrue(e.getMessage().contains("FAIL!!"));
-    }
+  public void testGetFields() throws IOException {
+    MarketoClient client = new StaticResponseMarketoClient(new String[] {
+        "/com/adobe/acs/commons/marketo/token-response.json", "/com/adobe/acs/commons/marketo/field-response.json",
+        "/com/adobe/acs/commons/marketo/response-noassets.json" });
+    List<MarketoField> fields = client.getFields(config);
+    assertNotNull(fields);
+    assertFalse(fields.isEmpty());
+    assertEquals(1, fields.size());
+    
+    assertEquals("Address", fields.get(0).getId());
   }
 
   @Test
   public void testGetForms() throws IOException {
     MarketoClient client = new StaticResponseMarketoClient(new String[] {
         "/com/adobe/acs/commons/marketo/token-response.json", "/com/adobe/acs/commons/marketo/form-response.json",
-        "/com/adobe/acs/commons/marketo/form-response-noassets.json" });
+        "/com/adobe/acs/commons/marketo/response-noassets.json" });
     List<MarketoForm> forms = client.getForms(config);
     assertNotNull(forms);
     assertFalse(forms.isEmpty());
     assertEquals(1, forms.size());
-
-    assertEquals("MarketoForm [folder=MarketoFolder [folderName=Sample Folder, type=Folder], id=1, name=Sample Form]",
-        forms.get(0).toString());
+    
+    assertEquals("MarketoForm [id=1, locale=en_US, name=Sample Form]", forms.get(0).toString());
   }
 
   @Test
@@ -116,8 +117,7 @@ public class TestMarketoClient {
 
   @Test
   public void testNotSuccess() throws IOException {
-    MarketoClient client = new StaticResponseMarketoClient(
-        "/com/adobe/acs/commons/marketo/form-response-notsuccess.json");
+    MarketoClient client = new StaticResponseMarketoClient("/com/adobe/acs/commons/marketo/response-notsuccess.json");
     try {
       client.getForms(config);
       fail();

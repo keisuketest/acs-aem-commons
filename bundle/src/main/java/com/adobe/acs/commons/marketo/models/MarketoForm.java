@@ -43,17 +43,9 @@ public class MarketoForm {
     return name;
   }
 
-  public void setId(int id) {
-    this.id = id;
-  }
-
-
-  public void setLocale(String locale) {
-    this.locale = locale;
-  }
-
-  public void setName(String name) {
-    this.name = name;
+  @Override
+  public String toString() {
+    return "MarketoForm [id=" + getId() + ", locale=" + getLocale() + ", name=" + getName() + "]";
   }
 
 }
