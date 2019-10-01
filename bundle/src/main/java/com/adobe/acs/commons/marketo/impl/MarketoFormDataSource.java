@@ -103,7 +103,7 @@ public class MarketoFormDataSource extends SlingSafeMethodsServlet {
             Map<String, Object> data = new HashMap<>();
             data.put("selected", currentValue == f.getId());
             data.put("value", f.getId());
-            data.put("text", String.format("%s [%s] (%d)", f.getName(), f.getLocale(), f.getId()));
+            data.put("text", String.format("%s [%s] (%s)", f.getName(), f.getLocale(), f.getId()));
             return new ValueMapResource(request.getResourceResolver(), new ResourceMetadata(), "nt:unstructured",
                 new ValueMapDecorator(data));
           }).collect(Collectors.toList());

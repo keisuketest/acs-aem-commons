@@ -55,14 +55,7 @@ public class MarketoClientConfigurationManager {
   public MarketoClientConfiguration getConfiguration() {
     log.trace("getConfiguration");
 
-    InheritanceValueMap pageProperties = null;
-    if (request.getResource().getPath().startsWith("/mnt")) {
-      Resource suffixResource = request.getRequestPathInfo().getSuffixResource();
-      log.debug("Using suffix resource: {}", suffixResource);
-      pageProperties = getPageProperties(suffixResource);
-    } else {
-      pageProperties = getPageProperties(request.getResource());
-    }
+    InheritanceValueMap pageProperties = getPageProperties();
     if (pageProperties != null) {
       log.debug("Loaded page properties: {}", pageProperties);
       String[] services = pageProperties.getInherited("cq:cloudserviceconfigs", new String[] {});
@@ -90,6 +83,18 @@ public class MarketoClientConfigurationManager {
       log.debug("Unable to load page properties");
       return null;
     }
+  }
+
+  private InheritanceValueMap getPageProperties() {
+    InheritanceValueMap pageProperties = null;
+    if (request.getResource().getPath().startsWith("/mnt")) {
+      Resource suffixResource = request.getRequestPathInfo().getSuffixResource();
+      log.debug("Using suffix resource: {}", suffixResource);
+      pageProperties = getPageProperties(suffixResource);
+    } else {
+      pageProperties = getPageProperties(request.getResource());
+    }
+    return pageProperties;
   }
 
   private InheritanceValueMap getPageProperties(Resource resource) {

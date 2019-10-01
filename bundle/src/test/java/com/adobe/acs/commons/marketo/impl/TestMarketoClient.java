@@ -122,6 +122,7 @@ public class TestMarketoClient {
       client.getForms(config);
       fail();
     } catch (IOException e) {
+      // expected to occur
     }
   }
 }
