@@ -66,14 +66,14 @@ public class TestMarketoFormDataSource {
     Mockito.when(configurationManager.getConfiguration(Mockito.anyString(), Mockito.any())).thenReturn(config);
     context.registerAdapter(ResourceResolver.class, ConfigurationManager.class, configurationManager);
 
-    MarketoFormDataSource mktoDS = new MarketoFormDataSource();
+    MarketoFormDataSource mktoDataSrc = new MarketoFormDataSource();
 
     MarketoClient client = new StaticResponseMarketoClient(new String[] {
         "/com/adobe/acs/commons/marketo/token-response.json", "/com/adobe/acs/commons/marketo/form-response.json",
         "/com/adobe/acs/commons/marketo/response-noassets.json" });
-    mktoDS.bindMarketoClient(client);
+    mktoDataSrc.bindMarketoClient(client);
 
-    mktoDS.doGet(context.request(), context.response());
+    mktoDataSrc.doGet(context.request(), context.response());
 
     assertNotNull(context.request().getAttribute(DataSource.class.getName()));
   }
