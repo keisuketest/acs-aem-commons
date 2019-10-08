@@ -52,12 +52,12 @@ public class MovingAsset extends MovingNode {
     }
 
     @Override
-    public void move(ReplicatorQueue replicatorQueue, ResourceResolver rr) throws IllegalAccessException, MovingException {
+    public void copy(ReplicatorQueue replicatorQueue, ResourceResolver rr) throws IllegalAccessException, MovingException {
          Session session = rr.adaptTo(Session.class);
         // Inhibits some workflows
         try {
             session.getWorkspace().getObservationManager().setUserData("changedByWorkflowProcess");
-            session.move(getSourcePath(), getDestinationPath());
+            session.copy(getSourcePath(), getDestinationPath());
             session.save();
             updateReferences(replicatorQueue, rr);
         } catch (RepositoryException e) {
