@@ -58,7 +58,7 @@ public class MovingFolder extends MovingNode {
     }
 
     @Override
-    public void move(ReplicatorQueue replicatorQueue, ResourceResolver rr) throws MovingException {
+    public void copy(ReplicatorQueue replicatorQueue, ResourceResolver rr) throws MovingException {
         try {
             Session session = rr.adaptTo(Session.class);
             session.getWorkspace().getObservationManager().setUserData("changedByWorkflowProcess");
